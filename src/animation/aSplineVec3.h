@@ -211,7 +211,9 @@ class AEulerCubicInterpolatorVec3 : public ACubicInterpolatorVec3
 {
 public:
 	AEulerCubicInterpolatorVec3() : ACubicInterpolatorVec3(ASplineVec3::CUBIC_EULER) {}
-	virtual vec3 interpolateSegment(
+    void helpFunction(vec3* b0, vec3* b3, int size);
+    
+    virtual vec3 interpolateSegment(
 		const std::vector<ASplineVec3::Key>& keys,
 		const std::vector<vec3>& ctrlPoints,
 		int segment, double u);

@@ -214,6 +214,22 @@ void AJoint::updateTransform()
 	// TODO: Compute mLocal2Global, which transforms from local coordinates to world coordinates
 	mLocal2Global = ATransform();
 	// TODO: Update children
+
+	if (mParent != nullptr)
+	{
+		mLocal2Global = mParent->mLocal2Global * mLocal2Parent;
+	}
+	else
+	{
+		
+		mLocal2Global = mLocal2Parent;
+	}
+
+	for (int i = 0; i < mChildren.size(); i++)
+	{
+		mChildren[i]->updateTransform();
+	}
+
 }
 
 void AJoint::Attach(AJoint* pParent, AJoint* pChild)

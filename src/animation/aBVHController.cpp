@@ -52,10 +52,34 @@ void BVHController::setActor(AActor* actor)
 
 void BVHController::update(double time, bool updateRootXZTranslation)
 {
-	// TODO: Given the current value of time, 
-	// 1. set the local transforms at each Skeleton joint using the cached spline data in member variables mRootMotion and mMotion 
-	// 2. update the joint transforms of the full skeleton in order to compute the global transforms at each joint
-	// Hint: the root can both rotate and translate (i.e. has 6 DOFs) while all the other joints just rotate 
+
+    ASkeleton* skeleton = mActor->getSkeleton();
+    // TODO: Given the current value of time, 
+    // 1. set the local transforms at each Skeleton joint using the cached spline data in member variables mRootMotion and mMotion 
+    // 2. update the joint transforms of the full skeleton in order to compute the global transforms at each joint
+    // Hint: the root can both rotate and translate (i.e. has 6 DOFs) while all the other joints just rotate 
+
+    
+
+    int num = skeleton->getNumJoints();
+    vec3 a = mRootMotion.getValue(time);
+
+    if (updateRootXZTranslation == false) {
+        a[0] = 0.f;
+        a[2] = 0.f;
+        skeleton->getRootNode()->setLocalTranslation(a);
+    }
+    else {
+        skeleton->getRootNode()->setLocalTranslation(a);
+    }
+
+    for (int i = 0; i < num; i++)
+    {
+        AJoint* j = skeleton->getJointByID(i);
+        j->setLocalRotation(mMotion[i].getCachedValue(time).ToRotation());
+    }
+
+    skeleton->update();
 
 }
 
