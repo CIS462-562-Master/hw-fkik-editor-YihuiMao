@@ -257,20 +257,20 @@ int IKController::computeLimbIK(ATarget target, AIKchain& IKchain, const vec3 mi
 	// TODO: Implement the analytic/geometric IK method assuming a three joint limb  
 	// The actual position of the end joint should match the target position within some episilon error 
 	// the variable "midJointAxis" contains the rotation axis for the middle joint
-	int result = 0;
-	int endJointID;
+	int return_value = 0;
+	int end_ID;
 	mTarget0 = target;
 
 	if (IKchain.getSize() > 0) {
-		endJointID = IKchain.getJoint(0)->getID();
+		end_ID = IKchain.getJoint(0)->getID();
 	}
 	else {
-		endJointID = -1;
+		end_ID = -1;
 	}
 
-	if (endJointID >= 0 && endJointID < pIKSkeleton->getNumJoints())
+	if (end_ID >= 0 && end_ID < pIKSkeleton->getNumJoints())
 	{
-		result = 1;
+		return_value = 1;
 		m_pEndJoint = IKchain.getJoint(0);
 		m_pMiddleJoint = IKchain.getJoint(1);
 		m_pBaseJoint = IKchain.getJoint(2);
@@ -314,7 +314,7 @@ int IKController::computeLimbIK(ATarget target, AIKchain& IKchain, const vec3 mi
 		m_pBaseJoint->setLocalRotation(newRot);
 		m_pBaseJoint->updateTransform();
 	}
-	return result;
+	return return_value;
 }
 
 bool IKController::IKSolver_CCD(int endJointID, const ATarget& target)
@@ -422,20 +422,20 @@ int IKController::computeCCDIK(ATarget target, AIKchain& IKchain, ASkeleton* pIK
 	// 3. compute desired change to local rotation matrix
 	// 4. set local rotation matrix to new value
 	// 5. update transforms for joint and all children
-	int result = 0;
-	int endJointID;
+	int return_value = 0;
+	int end_ID;
 	mTarget0 = target;
 
 	if (IKchain.getSize() > 0) {
-		endJointID = IKchain.getJoint(0)->getID();
+		end_ID = IKchain.getJoint(0)->getID();
 	}
 	else {
-		endJointID = -1;
+		end_ID = -1;
 	}
 
-	if (endJointID >= 0 && endJointID < pIKSkeleton->getNumJoints())
+	if (end_ID >= 0 && end_ID < pIKSkeleton->getNumJoints())
 	{
-		result = 1;
+		return_value = 1;
 		m_pEndJoint = IKchain.getJoint(0);
 		m_pBaseJoint = IKchain.getJoint(IKchain.getSize() - 1);
 		vec3 targetPos = mTarget0.getGlobalTranslation();
@@ -462,7 +462,7 @@ int IKController::computeCCDIK(ATarget target, AIKchain& IKchain, ASkeleton* pIK
 		}
 
 	}
-	return result;
+	return return_value;
 }
 
 
